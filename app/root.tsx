@@ -1,4 +1,4 @@
-import { LiveReload } from "remix";
+import { LiveReload, Outlet } from "remix";
 
 const App = () => (
   <html lang="en">
@@ -7,7 +7,7 @@ const App = () => (
       <title>Remix: So great, it's funny!</title>
     </head>
     <body>
-      Hello world
+      <Outlet />
       <LiveReload />
     </body>
   </html>
