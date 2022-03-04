@@ -12,10 +12,10 @@ type LoginForm = {
   password: string;
 };
 
-export async function register({
+export const register = async ({
   username,
   password,
-}: LoginForm) {
+}: LoginForm) => {
   const passwordHash = await bcrypt.hash(password, 10);
 
   const user = await db.user.create({
@@ -25,10 +25,10 @@ export async function register({
   return { id: user.id, username };
 }
 
-export async function login({
+export const login = async ({
   username,
   password,
-}: LoginForm) {
+}: LoginForm) => {
   const user = await db.user.findUnique({
     where: { username },
   });
@@ -70,7 +70,7 @@ const getUserSession = (request: Request) => (
   storage.getSession(request.headers.get("Cookie"))
 );
 
-export async function getUserId(request: Request) {
+export const getUserId = async (request: Request) => {
   const session = await getUserSession(request);
   const userId = session.get("userId");
 
@@ -79,10 +79,10 @@ export async function getUserId(request: Request) {
   return userId;
 }
 
-export async function requireUserId(
+export const requireUserId = async (
   request: Request,
   redirectTo: string = new URL(request.url).pathname
-) {
+) => {
   const session = await getUserSession(request);
   const userId = session.get("userId");
 
@@ -97,7 +97,7 @@ export async function requireUserId(
   return userId;
 }
 
-export async function getUser(request: Request) {
+export const getUser = async (request: Request) => {
   const userId = await getUserId(request);
   
   if (typeof userId !== "string") {
@@ -116,7 +116,7 @@ export async function getUser(request: Request) {
   }
 }
 
-export async function logout(request: Request) {
+export const logout = async (request: Request) => {
   const session = await getUserSession(request);
   
   return redirect("/login", {
@@ -126,10 +126,10 @@ export async function logout(request: Request) {
   });
 }
 
-export async function createUserSession(
+export const createUserSession = async (
   userId: string,
   redirectTo: string
-) {
+) => {
   const session = await storage.getSession();
 
   session.set("userId", userId);
