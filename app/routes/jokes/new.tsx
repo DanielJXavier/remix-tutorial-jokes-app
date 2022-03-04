@@ -1,8 +1,20 @@
-import type { ActionFunction } from "remix";
-import { useActionData, redirect, json } from "remix";
+import type { ActionFunction, LoaderFunction } from "remix";
+import { useActionData, redirect, json, useCatch, Link, } from "remix";
 
 import { db } from "~/utils/db.server";
-import { requireUserId } from "~/utils/session.server";
+import { requireUserId, getUserId, } from "~/utils/session.server";
+
+export const loader: LoaderFunction = async ({
+  request,
+}) => {
+  const userId = await getUserId(request);
+
+  if (!userId) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+
+  return {};
+};
 
 const validateJokeContent = (content: string) => {
   if (content.length < 10) {
@@ -43,8 +55,6 @@ export const action: ActionFunction = async ({
   const name = form.get("name");
   const content = form.get("content");
 
-  // we do this type check to be extra sure and to make TypeScript happy
-  // we'll explore validation next!
   if (
     typeof name !== "string" ||
     typeof content !== "string"
@@ -53,6 +63,7 @@ export const action: ActionFunction = async ({
       formError: `Form not submitted correctly.`,
     });
   }
+
   const fieldErrors = {
     name: validateJokeName(name),
     content: validateJokeContent(content),
@@ -141,9 +152,22 @@ const NewJokeRoute = () => {
       </form>
     </div>
   );
-};
+}
 
 export default NewJokeRoute;
+
+export const CatchBoundary = () => {
+  const caught = useCatch();
+
+  if (caught.status === 401) {
+    return (
+      <div className="error-container">
+        <p>You must be logged in to create a joke.</p>
+        <Link to="/login">Login</Link>
+      </div>
+    );
+  }
+}
 
 export const ErrorBoundary = () => (
   <div className="error-container">
