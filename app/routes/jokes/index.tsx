@@ -35,3 +35,9 @@ const JokesIndexRoute = () => {
 };
 
 export default JokesIndexRoute;
+
+export const ErrorBoundary = () => (
+  <div className="error-container">
+    I did a whoopsies.
+  </div>
+);

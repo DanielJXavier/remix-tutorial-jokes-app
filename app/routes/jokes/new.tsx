@@ -144,3 +144,9 @@ const NewJokeRoute = () => {
 };
 
 export default NewJokeRoute;
+
+export const ErrorBoundary = () => (
+  <div className="error-container">
+    Something unexpected went wrong. Sorry about that.
+  </div>
+);
