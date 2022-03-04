@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction } from "remix";
-import { Link, Outlet, useLoaderData } from "remix";
+import { Link, Outlet, useLoaderData, Form } from "remix";
 
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
@@ -52,11 +52,11 @@ const JokesRoute = () => {
           {data.user ? (
             <div className="user-info">
               <span>{`Hi ${data.user.username}`}</span>
-              <form action="/logout" method="post">
+              <Form action="/logout" method="post">
                 <button type="submit" className="button">
                   Logout
                 </button>
-              </form>
+              </Form>
             </div>
           ) : (
             <Link to="/login">Login</Link>
@@ -71,7 +71,7 @@ const JokesRoute = () => {
             <ul>
               {data.jokeListItems.map((joke) => (
                 <li key={joke.id}>
-                  <Link to={joke.id}>{joke.name}</Link>
+                  <Link prefetch="intent" to={joke.id}>{joke.name}</Link>
                 </li>
               ))}
             </ul>

@@ -1,5 +1,13 @@
 import type { LinksFunction, MetaFunction } from "remix";
-import { Links, LiveReload, Outlet, useCatch, Meta } from "remix";
+
+import { 
+  Links,
+  LiveReload,
+  Outlet,
+  useCatch,
+  Meta,
+  Scripts
+} from "remix";
 
 import globalStylesUrl from "./styles/global.css";
 import globalMediumStylesUrl from "./styles/global-medium.css";
@@ -53,6 +61,7 @@ const Document = ({
     </head>
     <body>
       {children}
+      <Scripts />
       <LiveReload />
     </body>
   </html>
@@ -82,11 +91,15 @@ export const CatchBoundary = () => {
   );
 }
 
-export const ErrorBoundary = ({ error }: { error: Error }) => (
-  <Document title="Uh-oh!">
-    <div className="error-container">
-      <h1>App Error</h1>
-      <pre>{error.message}</pre>
-    </div>
-  </Document>
-);
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error);
+
+  return (
+    <Document title="Uh-oh!">
+      <div className="error-container">
+        <h1>App Error</h1>
+        <pre>{error.message}</pre>
+      </div>
+    </Document>
+  )
+};

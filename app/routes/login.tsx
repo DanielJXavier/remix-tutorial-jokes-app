@@ -5,6 +5,7 @@ import {
   json,
   Link,
   useSearchParams,
+  Form
 } from "remix";
 
 import { db } from "~/utils/db.server";
@@ -136,7 +137,7 @@ const Login = () => {
     <div className="container">
       <div className="content" data-light="">
         <h1>Login</h1>
-        <form method="post">
+        <Form method="post">
           <input
             type="hidden"
             name="redirectTo"
@@ -240,7 +241,7 @@ const Login = () => {
           <button type="submit" className="button">
             Submit
           </button>
-        </form>
+        </Form>
       </div>
       <div className="links">
         <ul>
